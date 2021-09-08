@@ -8,7 +8,7 @@ from datetime import date
 
 def Stats(df,name,age,sex):
 
-    st.write("Record your Sp02 and Heart-rate")
+    st.write("Record your SpO2 and Heart-rate")
     file = 'Data/survival-stats.csv'
     df['Age'] = df['Age'].astype(int)
     df['BP'] = df['BP'].astype(int)
@@ -19,7 +19,7 @@ def Stats(df,name,age,sex):
         today = date.today()
         order_date = st.date_input('Today', today)
         sl_time = st.radio("",("Morning","Afternoon"))
-        SP02_rate = st.number_input("Sp02", value=0)
+        SP02_rate = st.number_input("SpO2", value=0)
         BP_rate = st.number_input("Heart-rate", value=0)
         submitted = st.form_submit_button("Submit")
 
