@@ -19,15 +19,15 @@ def Stats(df,name,age,sex):
         today = date.today()
         order_date = st.date_input('Today', today)
         sl_time = st.radio("",("Morning","Afternoon"))
-        BP_rate = st.number_input("BP", value=0)
         SP02_rate = st.number_input("Sp02", value=0)
+        BP_rate = st.number_input("BP", value=0)
         submitted = st.form_submit_button("Submit")
 
         if submitted:
             st.write(sl_time)
             st.write(name)
-            st.write(BP_rate)
             st.write(SP02_rate)
+            st.write(BP_rate)
             st.image('img/BP_Standard.png')
 
             df = df.append({
