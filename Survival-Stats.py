@@ -79,7 +79,7 @@ def Report(df):
 def main():
     st.title("SURVIVAL STATS")
 
-    fileUpload = st.file_uploader("Upload file", type=['csv','xlsx','pickle'])
+    st.image("img/jumper.jpg")
 
     file = "Data/survival-stats.csv"
     df = pd.read_csv(file)
