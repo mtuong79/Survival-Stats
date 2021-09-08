@@ -26,7 +26,7 @@ def Stats(df,name,age,sex):
         if submitted:
             st.write(sl_time)
             st.write(name)
-            st.write(f"BP: {BP_rate}")
+            st.write(BP_rate)
             st.write(SP02_rate)
             st.image('img/BP_Standard.png')
 
