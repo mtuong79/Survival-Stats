@@ -81,8 +81,7 @@ def main():
 
     fileUpload = st.file_uploader("Upload file", type=['csv','xlsx','pickle'])
 
-    file = "Data/Survival-Stats.csv"
-    # df = get_df(file)
+    file = "Data/survival-stats.csv"
     df = pd.read_csv(file)
                      #index_col=['Date'])
 
