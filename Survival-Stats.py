@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import date
 
-def Stats(df,name,age,sex):
+def Stats(df):
 
     st.write("Record your Hear-Rate and Sp02")
     file = 'Data/survival-stats.csv'
@@ -20,9 +20,23 @@ def Stats(df,name,age,sex):
         today = date.today()
         order_date = st.date_input('Today', today)
         sl_time = st.radio("",("Morning","Afternoon"))
+        name = st.radio('Name', ['Tuong', 'Thu','Danh','Van'], 0)
         SP02_rate = st.number_input("Sp02", value=0)
-        BP_rate = st.number_input("BP", value=0)
+        BP_rate = st.number_input("Heart beats", value=0)
         submitted = st.form_submit_button("Submit")
+
+        if name == 'Tuong':
+            age = 42
+            sex = 'Male'
+        elif name == 'Thu':
+            age = 44
+            sex = 'Female'
+        elif name == 'Danh':
+            age = 10
+            sex = 'Male'
+        else:
+            age = 13
+            sex = 'Female'
 
         if submitted:
             st.write(sl_time)
@@ -50,7 +64,7 @@ def Stats(df,name,age,sex):
 
 def Report(df):
     st.write("Report")
-    person = st.radio("",('Tuong','Thu','Danh','Heart Rate'))
+    person = st.radio("",('Tuong','Thu','Danh','Van','Heart Rate'))
 
     if person == 'Tuong':
         st.subheader("Survival Stats of Tuong")
@@ -75,6 +89,15 @@ def Report(df):
         st.line_chart(danh_chart[['BP','SpO2']])
         st.area_chart(danh_chart[['BP','SpO2']])
         st.write(danh_chart)
+
+    elif person == 'Van':
+        st.subheader("Survival Stats of Van")
+        df_chart = df.groupby('Name')
+        van_chart = df_chart.get_group("Van")
+        st.line_chart(van_chart[['BP','SpO2']])
+        st.area_chart(van_chart[['BP','SpO2']])
+        st.write(van_chart)
+
     else:
         st.subheader("Approximate maximum heart rate")
         age = st.number_input("Your Age", value=0)
@@ -101,24 +124,14 @@ def main():
 
     st.image("img/jumper.jpg")
 
-    file = "Data/survival-stats.csv"
+    file = "Data/Survival-Stats.csv"
     # df = get_df(file)
     df = pd.read_csv(file)
                      #index_col=['Date'])
 
-    name = st.sidebar.radio('Name', ['Tuong', 'Thu','Danh','Report'], 0)
-    if name == 'Tuong':
-        age = 42
-        sex = 'Male'
-        Stats(df,name,age,sex)
-    elif name == 'Thu':
-        age = 44
-        sex = 'Female'
-        Stats(df,name,age,sex)
-    elif name == 'Danh':
-        age = 10
-        sex = 'Male'
-        Stats(df,name,age,sex)
+    name = st.sidebar.radio('Name', ['Heart-rate & SpO2','Report'], 0)
+    if name == 'Heart-rate & SpO2':
+        Stats(df)
     else:
         Report(df)
 
