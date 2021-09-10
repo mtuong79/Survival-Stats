@@ -124,7 +124,7 @@ def main():
 
     st.image("img/jumper.jpg")
 
-    file = "Data/Survival-Stats.csv"
+    file = "Data/survival-stats.csv"
     # df = get_df(file)
     df = pd.read_csv(file)
                      #index_col=['Date'])
