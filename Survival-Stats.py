@@ -6,6 +6,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import date
+import base64
 
 def Stats(df):
 
@@ -58,9 +59,11 @@ def Stats(df):
             #df['Date'] = df['Date'].astype(str)
             st.write(df[['Name','BP','SpO2']])
             df.to_csv(file, index=False)
-
-    #df.to_csv(file, index=['Date'])
-
+            
+            csv = df.to_csv(index=False)
+            b64 = base64.b64encode(csv.encode()).decode()  # some strings
+            href = f'<a href="data:file/csv;base64,{b64}" download="Data/survival-stats.csv" target="_blank">Download csv file</a>'
+            st.markdown(href, unsafe_allow_html=True)
 
 def Report(df):
     st.write("Report")
