@@ -1,12 +1,14 @@
 # https://analyticsindiamag.com/building-a-covid-19-dashboard-using-streamlit/
 # https://realpython.com/pandas-groupby/
 # https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=8997&context=etd
+# http://awesome-streamlit.org/
 
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import date
 import base64
+
 
 def Stats(df):
 
@@ -42,8 +44,18 @@ def Stats(df):
         if submitted:
             st.write(sl_time)
             st.write(name)
-            st.write(SP02_rate)
-            st.write(BP_rate)
+
+            if age in range(7,14):
+                if BP_rate in range(75,110):
+                    st.success(f"Your heart-beats is **{BP_rate}**, in standard range **[75-110]**")
+                else:
+                    st.error(f"Your heart-beats is **{BP_rate}**, out of standard range **[75-110]**")
+            else:
+                if BP_rate in range(60,100):
+                    st.success(f"Your heart-beats is **{BP_rate}**, in standard range **[60-100]**")
+                else:
+                    st.error(f"Your heart-beats is **{BP_rate}**, out of standard range **[60-100]**")
+
             st.image('img/BP_Standard.png')
 
             df = df.append({
@@ -55,19 +67,13 @@ def Stats(df):
                 'BP' : BP_rate,
                 'SpO2' : SP02_rate
             }, ignore_index=True)
+            #st.write(df[['Name','BP','SpO2']])
 
-            #df['Date'] = df['Date'].astype(str)
-            st.write(df[['Name','BP','SpO2']])
             df.to_csv(file, index=False)
-            
-            csv = df.to_csv(index=False)
-            b64 = base64.b64encode(csv.encode()).decode()  # some strings
-            href = f'<a href="data:file/csv;base64,{b64}" download="Data/survival-stats.csv" target="_blank">Download csv file</a>'
-            st.markdown(href, unsafe_allow_html=True)
 
 def Report(df):
     st.write("Report")
-    person = st.radio("",('Tuong','Thu','Danh','Van','Heart Rate'))
+    person = st.radio("",('Tuong','Thu','Danh','Van','Heart Rate','SpO2'))
 
     if person == 'Tuong':
         st.subheader("Survival Stats of Tuong")
@@ -77,8 +83,13 @@ def Report(df):
         st.area_chart(tuong_chart[['BP','SpO2']])
         st.write(tuong_chart)
 
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()  # some strings
+        href = f'<a href="data:file/csv;base64,{b64}" download="Data/survival-stats.csv" target="_blank">Download csv file</a>'
+        st.markdown(href, unsafe_allow_html=True)
+
     elif person == 'Thu':
-        st.subheader("Survival Stats of Thu")
+        st.subheader    ("Survival Stats of Thu")
         df_chart = df.groupby('Name')
         thu_chart = df_chart.get_group("Thu")
         st.line_chart(thu_chart[['BP','SpO2']])
@@ -101,7 +112,7 @@ def Report(df):
         st.area_chart(van_chart[['BP','SpO2']])
         st.write(van_chart)
 
-    else:
+    elif person == 'Heart Rate':
         st.subheader("Approximate maximum heart rate")
         age = st.number_input("Your Age", value=0)
         max_HR = 220 - age
@@ -121,6 +132,11 @@ def Report(df):
         st.markdown("Like any other muscle, your heart needs exercise to keep it fit and healthy. "
                     "Regular exercise can help reduce your risk of heart disease and other health conditions, such as diabetes.")
         st.markdown("To keep your heart healthy, you should aim to do 150 minutes of low to moderate intensity exercise a week.")
+
+    else:
+        st.subheader("[Chỉ số SPO2](https://www.vinmec.com/vi/tin-tuc/thong-tin-suc-khoe/chi-so-spo2-o-nguoi-binh-thuong-la-bao-nhieu/)")
+        st.image("img/SpO2.png")
+        st.image("img/SpO2_Symptoms.png")
 
 def main():
     st.title("VITAL SIGN")
